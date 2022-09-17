@@ -62,7 +62,12 @@ db_carrinhos = {}
 async def criar_usuário(usuario: Usuario):
     if usuario.id in db_usuarios:
         return FALHA
-    db_usuarios[usuario.id] = usuario
+    elif '@' not in usuario.email:
+        return FALHA
+    elif not len(usuario.senha) >= 3:
+        return FALHA
+
+    db_usuarios[usuario.id] = usuario.dict()
     return OK
 
 
@@ -79,6 +84,9 @@ async def retornar_usuario(id: int):
 # senão retornar falha
 @app.get("/usuario/nome")
 async def retornar_usuario_com_nome(nome: str):
+    for id, usuario in db_usuarios.items():
+        if nome == usuario['nome']:
+            return db_usuarios[id]
     return FALHA
 
 
@@ -87,6 +95,9 @@ async def retornar_usuario_com_nome(nome: str):
 # ao deletar o usuário, deletar também endereços e carrinhos vinculados a ele
 @app.delete("/usuario/")
 async def deletar_usuario(id: int):
+    if id in db_usuarios:
+        db_usuarios.pop(id)
+        return OK
     return FALHA
 
 
@@ -105,6 +116,12 @@ async def retornar_enderecos_do_usuario(id_usuario: int):
 # senão retornar falha
 @app.get("/usuarios/emails/")
 async def retornar_emails(dominio: str):
+    emails = []
+    for id, usuario in db_usuarios.items():
+        if dominio == usuario['email'].split("@",1)[1]:
+            emails.append(usuario['email'])
+    if emails:
+        return {'emails': emails}
     return FALHA
 
 
@@ -112,7 +129,20 @@ async def retornar_emails(dominio: str):
 # senão cria um endereço, vincula ao usuário e retornar OK
 @app.post("/endereco/{id_usuario}/")
 async def criar_endereco(endereco: Endereco, id_usuario: int):
-    return OK
+    if id_usuario in db_usuarios:
+        lista_enderecos = ListaDeEnderecosDoUsuario(usuario=db_usuarios[id_usuario])
+        lista_enderecos.enderecos.append(endereco.dict())
+        lista_enderecos = lista_enderecos.dict()
+        db_end[lista_enderecos['usuario']['id']] = lista_enderecos['enderecos'].append(endere)
+        print(db_end)
+        # db_end[lista_enderecos['usuario'][id_usuario]]
+        # lista_enderecos = ListaDeEnderecosDoUsuario(
+        #     usuario=,
+        #     enderecos=endereco.dict()
+        # )
+        # db_end[lista_enderecos.usuario.id] = lista_enderecos.enderecos
+        print(db_end)
+    return FALHA
 
 
 # Se não existir endereço com o id_endereco retornar falha, 
@@ -127,6 +157,9 @@ async def deletar_endereco(id_endereco: int):
 # senão cria um produto e retornar OK
 @app.post("/produto/")
 async def criar_produto(produto: Produto):
+    if produto.id in db_produtos:
+        return FALHA
+    db_produtos[produto.id] = produto.dict()
     return OK
 
 
@@ -135,6 +168,9 @@ async def criar_produto(produto: Produto):
 # (lembrar de desvincular o produto dos carrinhos do usuário)
 @app.delete("/produto/{id_produto}/")
 async def deletar_produto(id_produto: int):
+    if id_produto in db_produtos:
+        return FALHA
+    db_produtos.pop(id_produto)
     return OK
 
 

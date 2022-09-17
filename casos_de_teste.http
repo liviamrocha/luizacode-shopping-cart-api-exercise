@@ -18,6 +18,20 @@ content-type: application/json
 GET http://127.0.0.1:8000/usuario?id=1 HTTP/1.1
 content-type: application/json
 
+#############################################
+# Pegar usuário pelo nome
+GET http://127.0.0.1:8000/usuario/nome?nome=teste HTTP/1.1
+content-type: application/json
+
+#############################################
+# Deletar usuário pelo id
+DELETE http://127.0.0.1:8000/usuario?id=1 HTTP/1.1
+content-type: application/json
+
+#############################################
+# Pegar e-mails com o mesmo domínio
+GET http://127.0.0.1:8000/usuarios/emails/?dominio=gmail.com HTTP/1.1
+content-type: application/json
 
 #######################################
 ############  endereço  ###############
@@ -30,8 +44,8 @@ content-type: application/json
 {
     "rua": "Rua Ladrilhada",
     "cep": "99999-999",
-    "cidade": "São Paulo",
-    "estado": "SP"
+    "cidade": "Paraíba",
+    "estado": "PB"
 }
 
 #######################################
