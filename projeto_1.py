@@ -58,8 +58,10 @@ async def deletar_usuario(id: int):
 # caso o usuário não possua nenhum endereço vinculado a ele, retornar 
 # uma lista vazia
 ### Estudar sobre Path Params (https://fastapi.tiangolo.com/tutorial/path-params/)
-@app.get("/usuario/{id_usuario}/endereços/")
+@app.get("/usuario/{id_usuario}/enderecos/")
 async def retornar_enderecos_do_usuario(id_usuario: int):
+    if users.UserValidation.valid_id(id_usuario):
+        return adresses.Adress.get_adresses(id_usuario)
     return FALHA
 
 
@@ -77,38 +79,30 @@ async def retornar_emails(dominio: str):
 # senão cria um endereço, vincula ao usuário e retornar OK
 @app.post("/endereco/{id_usuario}/")
 async def criar_endereco(endereco: adress.Endereco, id_usuario: int):
-    if id_usuario in db_usuarios:
-        lista_enderecos = adress.ListaDeEnderecosDoUsuario(usuario=db_usuarios[id_usuario])
-        lista_enderecos.enderecos.append(endereco.dict())
-        lista_enderecos = lista_enderecos.dict()
-        db_end[lista_enderecos['usuario']['id']] = lista_enderecos['enderecos'].append(endere)
-        print(db_end)
-        # db_end[lista_enderecos['usuario'][id_usuario]]
-        # lista_enderecos = ListaDeEnderecosDoUsuario(
-        #     usuario=,
-        #     enderecos=endereco.dict()
-        # )
-        # db_end[lista_enderecos.usuario.id] = lista_enderecos.enderecos
-        print(db_end)
+    if users.UserValidation.valid_id(id_usuario):
+        adresses.Adress.add_adress(endereco, id_usuario)
+        return OK
     return FALHA
-
 
 # Se não existir endereço com o id_endereco retornar falha, 
 # senão deleta endereço correspondente ao id_endereco e retornar OK
 # (lembrar de desvincular o endereço ao usuário)
-@app.delete("/endereco/{id_endereco}/")
-async def deletar_endereco(id_endereco: int):
-    return OK
+@app.delete("/usuario/{id_usuario}/endereco/{id_endereco}")
+async def deletar_endereco(id_usuario: int, id_endereco: int):
+    if adresses.AdressValidation.valid_adress(id_usuario):
+        adresses.Adress.delete_adress(id_usuario, id_endereco)
+        return OK
+    return FALHA
 
 
 # Se tiver outro produto com o mesmo ID retornar falha, 
 # senão cria um produto e retornar OK
 @app.post("/produto/")
 async def criar_produto(produto: product.Produto):
-    if products.ProductValidation.valid_product(produto.id):
-        return FALHA
-    products.Product.add_product(produto)
-    return OK
+    if not products.ProductValidation.valid_product(produto.id):
+        products.Product.add_product(produto)
+        return OK
+    return FALHA
 
 
 # Se não existir produto com o id_produto retornar falha, 
@@ -116,10 +110,10 @@ async def criar_produto(produto: product.Produto):
 # (lembrar de desvincular o produto dos carrinhos do usuário)
 @app.delete("/produto/{id_produto}/")
 async def deletar_produto(id_produto: int):
-    if not products.ProductValidation.valid_product(id_produto):
-        return FALHA
-    products.Product.remove_product(id_produto)
-    return OK
+    if products.ProductValidation.valid_product(id_produto):
+        products.Product.remove_product(id_produto)
+        return OK
+    return FALHA
 
 # Se não existir usuário com o id_usuario ou id_produto retornar falha, 
 # se não existir um carrinho vinculado ao usuário, crie o carrinho
@@ -127,28 +121,39 @@ async def deletar_produto(id_produto: int):
 # senão adiciona produto ao carrinho e retornar OK
 @app.post("/carrinho/{id_usuario}/{id_produto}/")
 async def adicionar_carrinho(id_usuario: int, id_produto: int):
-    return OK
+    if users.UserValidation.valid_id(id_usuario) and products.ProductValidation.valid_product(id_produto):
+        carts.Cart.add_cart(id_usuario, id_produto)
+        return OK
+    return FALHA
 
 
 # Se não existir carrinho com o id_usuario retornar falha, 
 # senão retorna o carrinho de compras.
 @app.get("/carrinho/{id_usuario}/")
 async def retornar_carrinho(id_usuario: int):
-    return cart.CarrinhoDeCompras
+    if not carts.CartValidation.valid_cart(id_usuario):
+        return FALHA
+    return carts.Cart.get_cart(id_usuario)
 
 
 # Se não existir carrinho com o id_usuario retornar falha, 
 # senão retorna o o número de itens e o valor total do carrinho de compras.
-@app.get("/carrinho/{id_usuario}/")
+@app.get("/carrinho/total/{id_usuario}/")
 async def retornar_total_carrinho(id_usuario: int):
-    numero_itens, valor_total = 0
-    return numero_itens, valor_total
+    if carts.CartValidation.valid_cart(id_usuario):
+        numero_itens = carts.Cart.get_cart_quantity(id_usuario)
+        valor_total = carts.Cart.get_cart_total(id_usuario)
+        return numero_itens, valor_total
+    return FALHA
 
 
 # Se não existir usuário com o id_usuario retornar falha, 
 # senão deleta o carrinho correspondente ao id_usuario e retornar OK
 @app.delete("/carrinho/{id_usuario}/")
 async def deletar_carrinho(id_usuario: int):
+    if not carts.CartValidation.valid_cart():
+        return FALHA
+    carts.Cart.remove_cart(id_usuario)
     return OK
 
 

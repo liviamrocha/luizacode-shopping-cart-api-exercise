@@ -23,6 +23,5 @@ class ProductValidation:
 
     @classmethod
     def valid_product(cls, id):
-        print(Product.get_product(id))
         return True if Product.get_product(id) else False
     

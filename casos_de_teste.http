@@ -23,6 +23,11 @@ content-type: application/json
 GET http://127.0.0.1:8000/usuario/nome?nome=teste HTTP/1.1
 content-type: application/json
 
+#######################################
+# Pegar endereços do usuário
+GET http://127.0.0.1:8000/usuario/1/enderecos HTTP/1.1
+content-type: application/json
+
 #############################################
 # Deletar usuário pelo id
 DELETE http://127.0.0.1:8000/usuario?id=1 HTTP/1.1
@@ -41,12 +46,20 @@ content-type: application/json
 POST http://127.0.0.1:8000/endereco/1 HTTP/1.1
 content-type: application/json
 
+
 {
-    "rua": "Rua Ladrilhada",
+    "id": 1,
+    "rua": "Rua 1",
     "cep": "99999-999",
     "cidade": "Paraíba",
     "estado": "PB"
 }
+
+#############################################
+# Deletar endereço
+DELETE http://127.0.0.1:8000/usuario/1/endereco/1 HTTP/1.1
+content-type: application/json
+
 
 #######################################
 ############  produto  ################
@@ -57,18 +70,34 @@ POST http://127.0.0.1:8000/produto HTTP/1.1
 content-type: application/json
 
 {
-    "id": 4,
-    "nome": "Sorvete",
-    "descricao": "Doce gelado",
-    "preco": 9.99
+    "id": 2,
+    "nome": "Oreo",
+    "descricao": "Biscoito doce",
+    "preco": 5.99
 }
 
-#######################################
-# Pegar produto pelo ID
-GET http://127.0.0.1:8000/produto?id=1 HTTP/1.1
-content-type: application/json
 
 #############################################
 # Deletar produto pelo id
-DELETE http://127.0.0.1:8000/produto/4/ HTTP/1.1
+DELETE http://127.0.0.1:8000/produto/2/ HTTP/1.1
 content-type: application/json
+
+#######################################
+############  carrinho  ###############
+#######################################
+
+#############################################
+# Adicionar ao carrinho
+POST http://127.0.0.1:8000/carrinho/1/2/ HTTP/1.1
+content-type: application/json
+
+#############################################
+# Retornar carrinho
+GET http://127.0.0.1:8000/carrinho/1/ HTTP/1.1
+content-type: application/json
+
+#############################################
+# Retornar total do carrinho
+GET http://127.0.0.1:8000/carrinho/total/1/ HTTP/1.1
+content-type: application/json
+
