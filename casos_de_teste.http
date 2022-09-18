@@ -57,8 +57,18 @@ POST http://127.0.0.1:8000/produto HTTP/1.1
 content-type: application/json
 
 {
-    "id": 1,
+    "id": 4,
     "nome": "Sorvete",
     "descricao": "Doce gelado",
     "preco": 9.99
 }
+
+#######################################
+# Pegar produto pelo ID
+GET http://127.0.0.1:8000/produto?id=1 HTTP/1.1
+content-type: application/json
+
+#############################################
+# Deletar produto pelo id
+DELETE http://127.0.0.1:8000/produto/4/ HTTP/1.1
+content-type: application/json

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-from product import Produto
+from .product import Produto
 
 
 class CarrinhoDeCompras(BaseModel):

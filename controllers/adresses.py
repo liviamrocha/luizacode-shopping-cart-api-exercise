@@ -1,13 +1,12 @@
-from schemas.adresses import ListaDeEnderecosDoUsuario
-from user import User
+from schemas.adress import ListaDeEnderecosDoUsuario
+from controllers.users import User
 
 class Adress:
     
-    def __init__(self):
-        self.db_enderecos = {}
+    db_enderecos = {}
 
     def get_adresses(self, user_id):
-        for register in self.db_enderecos:
+        for register in Adress.db_enderecos:
             if register.usuario.id == user_id:
                 return register.enderecos
 
@@ -16,10 +15,10 @@ class Adress:
             usuario=User.get_user_by_id(user_id),
             enderecos=[adress]
         )
-        self.db_enderecos[user_id] = adresses_list
+        Adress.db_enderecos[user_id] = adresses_list
 
     # def delete_adress(self, adress_id):
-    #     self.db_enderecos()
+    #     Adress.db_enderecos()
 
 
     
