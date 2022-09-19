@@ -7,30 +7,30 @@ POST http://127.0.0.1:8000/usuario HTTP/1.1
 content-type: application/json
 
 {
-    "id": 4,
-    "nome": "teste 4",
-    "email": "teste_4@outlook.com",
-    "senha": "123456"
+    "id": 1,
+    "nome": "teste 1",
+    "email": "teste_1@outlook.com",
+    "senha": "132"
 }
 
 #######################################
 # Pegar usuário
-GET http://127.0.0.1:8000/usuario?id=4 HTTP/1.1
+GET http://127.0.0.1:8000/usuario?id=1 HTTP/1.1
 content-type: application/json
 
 #############################################
 # Pegar usuário pelo nome
-GET http://127.0.0.1:8000/usuario/nome?nome=teste 4 HTTP/1.1
+GET http://127.0.0.1:8000/usuario/nome?nome=teste 1 HTTP/1.1
 content-type: application/json
 
 #######################################
 # Pegar endereços do usuário
-GET http://127.0.0.1:8000/usuario/4/enderecos HTTP/1.1
+GET http://127.0.0.1:8000/usuario/1/enderecos HTTP/1.1
 content-type: application/json
 
 #############################################
 # Deletar usuário pelo id
-DELETE http://127.0.0.1:8000/usuario?id=4 HTTP/1.1
+DELETE http://127.0.0.1:8000/usuario?id=1 HTTP/1.1
 content-type: application/json
 
 #############################################
@@ -43,21 +43,21 @@ content-type: application/json
 #######################################
 
 # Criar endereço
-POST http://127.0.0.1:8000/endereco/4 HTTP/1.1
+POST http://127.0.0.1:8000/endereco/1 HTTP/1.1
 content-type: application/json
 
 
 {
-    "id": 2,
-    "rua": "Rua x",
+    "id": 1,
+    "rua": "Rua 1",
     "cep": "99999-999",
-    "cidade": "Paraíba",
+    "cidade": "João Pessoa",
     "estado": "PB"
 }
 
 #############################################
 # Deletar endereço
-DELETE http://127.0.0.1:8000/usuario/4/endereco/1 HTTP/1.1
+DELETE http://127.0.0.1:8000/usuario/1/endereco/1 HTTP/1.1
 content-type: application/json
 
 
@@ -65,15 +65,21 @@ content-type: application/json
 ############  produto  ################
 #######################################
 
+#############################################
+# Retorna todos produtos
+GET http://127.0.0.1:8000/produto HTTP/1.1
+content-type: application/json
+
+#############################################
 # Criar produto
 POST http://127.0.0.1:8000/produto HTTP/1.1
 content-type: application/json
 
 {
-    "id": 10,
+    "id": 6,
     "nome": "Picolé",
     "descricao": "Doce gelado",
-    "preco": 5.99
+    "preco": 3.99
 }
 
 
@@ -88,22 +94,22 @@ content-type: application/json
 
 #############################################
 # Adicionar ao carrinho
-POST http://127.0.0.1:8000/carrinho/4/10/ HTTP/1.1
+POST http://127.0.0.1:8000/carrinho/1/7/ HTTP/1.1
 content-type: application/json
 
 #############################################
 # Retornar carrinho
-GET http://127.0.0.1:8000/carrinho/4/ HTTP/1.1
+GET http://127.0.0.1:8000/carrinho/1/ HTTP/1.1
 content-type: application/json
 
 #############################################
 # Retornar total e quantidade de produtos no carrinho
-GET http://127.0.0.1:8000/carrinho/total/4/ HTTP/1.1
+GET http://127.0.0.1:8000/carrinho/total/1/ HTTP/1.1
 content-type: application/json
 
 #############################################
 # Deletar carrinho do usuário
-DELETE http://127.0.0.1:8000/carrinho/3/ HTTP/1.1
+DELETE http://127.0.0.1:8000/carrinho/1/ HTTP/1.1
 content-type: application/json
 
 

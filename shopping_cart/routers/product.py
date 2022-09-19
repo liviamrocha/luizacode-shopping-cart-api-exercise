@@ -7,6 +7,11 @@ router = APIRouter()
 OK = "OK"
 FALHA = "FALHA"
 
+@router.get("/produto/")
+async def retornar_todos_produtos():
+    return Product.get_all_products()
+
+
 # Se tiver outro produto com o mesmo ID retornar falha, 
 # senão cria um produto e retornar OK
 @router.post("/produto/")
