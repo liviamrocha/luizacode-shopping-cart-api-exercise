@@ -1,4 +1,4 @@
-from app.schemas.adress import ListaDeEnderecosDoUsuario
+from shopping_cart.schemas.adress import ListaDeEnderecosDoUsuario
 
 
 class Adress:

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import adress, cart, product, user
+from shopping_cart.routers import adress, cart, product, user
 
 app = FastAPI()
 

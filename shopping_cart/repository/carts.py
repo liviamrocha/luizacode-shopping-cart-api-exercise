@@ -1,5 +1,5 @@
 from functools import reduce
-from app.schemas.cart import CarrinhoDeCompras
+from shopping_cart.schemas.cart import CarrinhoDeCompras
 
 class Cart:
 

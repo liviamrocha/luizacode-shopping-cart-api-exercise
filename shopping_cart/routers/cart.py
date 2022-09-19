@@ -1,6 +1,6 @@
-from app.controllers.users import *
-from app.controllers.products import *
-from app.controllers.carts import *
+from shopping_cart.repository.users import *
+from shopping_cart.repository.products import *
+from shopping_cart.repository.carts import *
 from fastapi import APIRouter
 
 router = APIRouter()

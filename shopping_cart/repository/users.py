@@ -1,6 +1,6 @@
 
-from app.controllers.carts import Cart
-from app.controllers.adresses import Adress
+from shopping_cart.repository.carts import Cart
+from shopping_cart.repository.adresses import Adress
 
 class User:
 

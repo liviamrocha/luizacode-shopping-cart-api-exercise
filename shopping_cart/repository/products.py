@@ -1,5 +1,5 @@
 
-from app.controllers.carts import Cart
+from shopping_cart.repository.carts import Cart
 
 class Product:
 

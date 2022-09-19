@@ -1,5 +1,5 @@
-from app.schemas.product import *
-from app.controllers.products import *
+from shopping_cart.schemas.product import *
+from shopping_cart.repository.products import *
 from fastapi import APIRouter
 
 router = APIRouter()

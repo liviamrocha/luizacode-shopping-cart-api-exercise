@@ -1,7 +1,7 @@
-from app.schemas.user import *
-from app.schemas.adress import *
-from app.controllers.users import *
-from app.controllers.adresses import *
+from shopping_cart.schemas.user import *
+from shopping_cart.schemas.adress import *
+from shopping_cart.repository.users import *
+from shopping_cart.repository.adresses import *
 
 from fastapi import APIRouter
 
