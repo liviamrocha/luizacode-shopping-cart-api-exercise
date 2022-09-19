@@ -70,7 +70,7 @@ async def retornar_enderecos_do_usuario(id_usuario: int):
 @router.get("/usuarios/emails/")
 async def retornar_emails(dominio: str):
     if User.get_emails_by_domain(dominio):
-        return User.get_emails_by_domain(dominio)
+        return {'emails': User.get_emails_by_domain(dominio)}
     return FALHA
 
 # Se não existir endereço com o id_endereco retornar falha, 

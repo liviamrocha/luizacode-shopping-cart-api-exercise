@@ -37,7 +37,7 @@ async def retornar_total_carrinho(id_usuario: int):
     if CartValidation.valid_cart(id_usuario):
         numero_itens = Cart.get_cart_quantity(id_usuario)
         valor_total = Cart.get_cart_total(id_usuario)
-        return numero_itens, valor_total
+        return {'quantidade_de_itens': numero_itens, 'total': round(valor_total, 2)}
     return FALHA
 
 
