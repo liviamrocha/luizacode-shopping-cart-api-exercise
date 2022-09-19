@@ -1,3 +1,7 @@
+
+from app.controllers.carts import Cart
+from app.controllers.adresses import Adress
+
 class User:
 
     db_usuarios = {}
@@ -19,8 +23,12 @@ class User:
 
     @classmethod
     def delete_user(cls, id):
-        return cls.db_usuarios.pop(id)
-
+        cls.db_usuarios.pop(id)
+        if Adress.get_adresses(id):
+            Adress.delete_all_adress(id)
+        elif Cart.get_cart(id):
+            Cart.remove_cart(id)
+    
     @classmethod
     def get_user_adresses(cls, id, db_enderecos):
         for registro in db_enderecos:

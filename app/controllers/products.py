@@ -1,3 +1,6 @@
+
+from app.controllers.carts import Cart
+
 class Product:
 
     db_produtos = {}
@@ -9,10 +12,14 @@ class Product:
     @classmethod
     def add_product(cls, product):
         cls.db_produtos[product.id] = product.dict()
+        print(cls.db_produtos)
 
     @classmethod
     def remove_product(cls, product_id):
         cls.db_produtos.pop(product_id)
+        print(Cart.get_product(product_id))
+        if Cart.get_product(product_id):
+            Cart.remove_product(product_id)
 
     @classmethod
     def add_to_cart(cls, product_id, user_id, db_carrinho):

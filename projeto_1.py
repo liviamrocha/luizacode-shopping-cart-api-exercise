@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status, HTTPException
 from typing import List
 from pydantic import BaseModel
-from schemas import adress, cart, product, user
-from controllers import users, adresses, carts, products
+from app.schemas import adress, cart, product, user
+from app.controllers import users, adresses, carts, products
 
 
 app = FastAPI()
@@ -79,8 +79,9 @@ async def retornar_emails(dominio: str):
 # senão cria um endereço, vincula ao usuário e retornar OK
 @app.post("/endereco/{id_usuario}/")
 async def criar_endereco(endereco: adress.Endereco, id_usuario: int):
-    if users.UserValidation.valid_id(id_usuario):
-        adresses.Adress.add_adress(endereco, id_usuario)
+    if users.UserValidation.valid_id(id_usuario) and adresses.AdressValidation.valid_to_add(id_usuario, endereco.id):
+        usuario = users.User.get_user_by_id(id_usuario)
+        adresses.Adress.add_adress(endereco, usuario)
         return OK
     return FALHA
 
@@ -89,7 +90,7 @@ async def criar_endereco(endereco: adress.Endereco, id_usuario: int):
 # (lembrar de desvincular o endereço ao usuário)
 @app.delete("/usuario/{id_usuario}/endereco/{id_endereco}")
 async def deletar_endereco(id_usuario: int, id_endereco: int):
-    if adresses.AdressValidation.valid_adress(id_usuario):
+    if adresses.AdressValidation.valid_to_delete(id_usuario, id_endereco):
         adresses.Adress.delete_adress(id_usuario, id_endereco)
         return OK
     return FALHA
@@ -122,7 +123,8 @@ async def deletar_produto(id_produto: int):
 @app.post("/carrinho/{id_usuario}/{id_produto}/")
 async def adicionar_carrinho(id_usuario: int, id_produto: int):
     if users.UserValidation.valid_id(id_usuario) and products.ProductValidation.valid_product(id_produto):
-        carts.Cart.add_cart(id_usuario, id_produto)
+        product = products.Product.get_product(id_produto)
+        carts.Cart.add_cart(id_usuario, product)
         return OK
     return FALHA
 
@@ -131,9 +133,9 @@ async def adicionar_carrinho(id_usuario: int, id_produto: int):
 # senão retorna o carrinho de compras.
 @app.get("/carrinho/{id_usuario}/")
 async def retornar_carrinho(id_usuario: int):
-    if not carts.CartValidation.valid_cart(id_usuario):
-        return FALHA
-    return carts.Cart.get_cart(id_usuario)
+    if carts.CartValidation.valid_cart(id_usuario):
+        return carts.Cart.get_cart(id_usuario)
+    return FALHA
 
 
 # Se não existir carrinho com o id_usuario retornar falha, 
@@ -151,10 +153,11 @@ async def retornar_total_carrinho(id_usuario: int):
 # senão deleta o carrinho correspondente ao id_usuario e retornar OK
 @app.delete("/carrinho/{id_usuario}/")
 async def deletar_carrinho(id_usuario: int):
-    if not carts.CartValidation.valid_cart():
-        return FALHA
-    carts.Cart.remove_cart(id_usuario)
-    return OK
+    if carts.CartValidation.valid_cart(id_usuario):
+        carts.Cart.remove_cart(id_usuario)
+        return OK
+    return FALHA
+
 
 
 @app.get("/")
