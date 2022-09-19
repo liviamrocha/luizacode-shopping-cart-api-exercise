@@ -1,26 +1,6 @@
 from functools import reduce
 from app.schemas.cart import CarrinhoDeCompras
 
-# from pydantic import BaseModel
-# from typing import List
-
-# class Usuario(BaseModel):
-#     id: int
-#     nome: str
-#     email: str
-#     senha: str
-# class Produto(BaseModel):
-#     id: int
-#     nome: str
-#     descricao: str
-#     preco: float
-
-# class CarrinhoDeCompras(BaseModel):
-#     id_usuario: int
-#     produtos: List[Produto] = []
-#     preco_total: float
-#     quantidade_de_produtos: int
-
 class Cart:
 
     db_carrinho = {}
@@ -88,20 +68,3 @@ class CartValidation(Cart):
     def valid_cart(cls, user_id):
         return True if Cart.get_cart(user_id) else False
 
-# if __name__ == '__main__':
-#     user = user.Usuario(id=1, nome='livia', email='teste@gmail.com', senha='1234')
-#     usuario = User()
-#     usuario.add_user(user)
-
-#     produto1 = product.Produto(id=1, nome='Sorvete', descricao='Doce gelado', preco=9.99)
-#     produto2 = Produto(id=2, nome='Picolé', descricao='Doce gelado', preco=2)
-#     product = Product()
-#     product.add_product(produto1)
-#     product.add_product(produto2)
-
-#     cart = Cart()
-#     cart.add_cart(1, 1)
-#     cart.add_cart(1, 2)
-
-#     print(cart.get_cart_quantity(1))
-    
