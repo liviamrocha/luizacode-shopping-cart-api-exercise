@@ -7,7 +7,7 @@
 
 ## Objetivo do projeto
 
-O objetivo desse projeto é iniciar o desenvolvimento de um serviço HTTP, utilizando FastAPI, para acesso aos dados de um carrinho de compras. 
+O objetivo desse projeto é iniciar o desenvolvimento de um serviço HTTP, utilizando FastAPI, para acesso aos dados de um carrinho de compras. Neste primeiro exercício, nenhum banco de dados foi utilizado para armazenamento dos dados.
 
 
 ## ✅  Requisitos 
